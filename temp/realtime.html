@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans" rel="stylesheet">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}">
+    <meta charset='utf-8' />
+    <title>Add live realtime data</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css' rel='stylesheet' />
+</head>
+<body>
+
+  <div class="container">
+    <section class="header">
+      <h2>Cambridge Half Marathon</h4>
+    </section>
+    <div class="navbar-spacer"></div>
+    <div class="row">
+      <div class="two-thirds column" style="margin-top:20%" id="map">
+      </div>
+      <div class="one-third column">
+	<p> Some Info </p>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoidm0taW5kaWdvIiwiYSI6ImNqOWp5emp4cTB3MjIycWxnNTdkaXhsaDgifQ.MY8ZuPL4FGmyU08flsXXmQ';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v9',
+    zoom: 0
+});
+
+var url = 'https://wanderdrone.appspot.com/';
+map.on('load', function () {
+    window.setInterval(function() {
+        map.getSource('drone').setData(url);
+    }, 2000);
+
+    map.addSource('drone', { type: 'geojson', data: url });
+    map.addLayer({
+        "id": "drone",
+        "type": "symbol",
+        "source": "drone",
+        "layout": {
+            "icon-image": "rocket-15"
+        }
+    });
+});
+</script>
+
+</body>
+</html>

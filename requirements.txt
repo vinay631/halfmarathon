@@ -1,0 +1,8 @@
+Flask
+gevent
+flask-socketio
+gevent-socketio
+gevent-websocket
+eventlet
+geojson
+pandas

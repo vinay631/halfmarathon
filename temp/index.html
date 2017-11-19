@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Half Marathon</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src='http://api.tiles.mapbox.com/mapbox.js/v1.5.0/mapbox.js'></script>
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css' rel='stylesheet' />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+     integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+        crossorigin=""/>
+
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans" rel="stylesheet">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}">
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css' rel='stylesheet' />
+
+  <style>
+        body { margin:20; padding:20; }
+        #map { position:relative; top:0; bottom:0; width:100%; }
+  </style>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<!--
+  <div class="container">
+    <section class="header">
+      <h2>Cambridge Half Marathon</h4>
+    </section>
+    <div class="navbar-spacer"></div>
+    <div class="value-prop row">
+-->
+      <div class="two-thirds column" id="map">
+      </div>
+<!--
+      <div class="one-third column">
+	<p> Some Info </p>
+      </div>
+    </div>
+  </div>
+-->
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css' rel='stylesheet' />
+
+    <script>
+        var lat = 42.36;
+	var lon = -71.09;
+	mapboxgl.accessToken = 'pk.eyJ1Ijoidm0taW5kaWdvIiwiYSI6ImNqOWp5emp4cTB3MjIycWxnNTdkaXhsaDgifQ.MY8ZuPL4FGmyU08flsXXmQ';
+	var map = new mapboxgl.Map({
+	    container: 'map',
+	    style: 'mapbox://styles/mapbox/streets-v8',
+	    zoom: 13,
+	    center: [lon, lat]
+	});
+    geoJson = [];
+	var url = 'https://wanderdrone.appspot.com/';
+	map.on('load', function () {
+	    window.setInterval(function() {
+		map.getSource('drone').setData(url);
+	    }, 2000);
+
+	    map.addSource('drone', { type: 'geojson', data: url });
+	    map.addLayer({
+		"id": "drone",
+		"type": "symbol",
+		"source": "drone",
+		"layout": {
+			"icon-image": "{{ url_for('static', filename='icons/pitch-15.svg') }}"
+		}
+	    });
+	});
+
+    </script>
+</body>
+</html>
+
